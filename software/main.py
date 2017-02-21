@@ -71,7 +71,7 @@ def run(path_storing, device):
 
     #device = 0
     rs = 2000000
-    cf = 100000000
+    cf = 1090000000
     ns = rs * 20
     gain = "auto"
 
