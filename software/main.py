@@ -83,7 +83,7 @@ def storing_stream_with_windows(lock, rs, cf, gain, ns, device, path_storing):
     #print("print")
 
         filename = get_groundstationid() + "_f" + str(cf) + "_d" + str(device) + "_t" + str(int(time.time()))
-        f = open(path_storing + filename, 'wb')
+        f = open(path_storing + filename + ".tmp", 'wb')
         f.write(samples)
         f.close()
         os.rename(path_storing + filename + ".tmp", path_storing + filename + ".dat")
