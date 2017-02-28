@@ -1,0 +1,22 @@
+{
+    "sdr": [
+        {
+            "name": "rtlsdr",
+            "type": "rtlsdr",
+            "center_frequency": 1090000000,
+            "gain_fixed": "auto",
+            "gain_auto_range": [
+                0,
+                50
+            ],
+            "gain_auto_threshold": 0.3,
+            "frequency_correction": 0,
+            "mode": "",
+            "timer": [
+                100000,
+                200000
+            ],
+            "recording_time": 90
+        }
+    ]
+}
