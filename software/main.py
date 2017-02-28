@@ -14,7 +14,6 @@ import time
 # import multiprocessing
 from multiprocessing import Process, Lock
 
-
 def create_config():
     sdrconfig = { "sdr":
             [
@@ -68,7 +67,8 @@ def get_groundstationid():
 def storing_stream_with_windows(lock, rs, cf, gain, ns, device, path_storing):
 
     if librtlsdr.rtlsdr_get_device_count() > 0:
-        lock.acquire()
+        lock.acquire(timeout=ns/rs*1.1)
+        print("locked")
         sdr = RtlSdr(device_index = device)
 
         # some defaults
@@ -119,7 +119,8 @@ def run(path_storing, path_ops, path_logs, device):
             #print("end")
 
         while True == True:
-            time.sleep(2)
+            sleeping_time = 2
+            time.sleep(sleeping_time)
             for n, p in enumerate(jobs):
                 if not p.is_alive():
                     jobs.pop(n)
@@ -127,7 +128,7 @@ def run(path_storing, path_ops, path_logs, device):
                     p = Process(target=storing_stream_with_windows, args=(lock, rs, cf, gain, ns, device, path_storing))
                     jobs.append(p)
                     p.start()
-                    print("rec number", recs, 'added')
+                    print("rec number", recs, 'added', lock)
 
 if __name__ == '__main__':
     #create_config()
