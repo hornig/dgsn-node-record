@@ -3,7 +3,7 @@ import platform
 #import requests
 #import numpy as np
 #import sys
-from rtlsdr import RtlSdr, librtlsdr
+from rtlsdr import RtlSdr#, librtlsdr
 
 import hashlib
 from uuid import getnode as get_mac
@@ -66,7 +66,7 @@ def get_groundstationid():
 
 def storing_stream_with_windows(lock, rs, cf, gain, ns, device, path_storing):
 
-    if librtlsdr.rtlsdr_get_device_count() > 0:
+    if 0==0:#librtlsdr.rtlsdr_get_device_count() > 0:
         lock.acquire(timeout=ns/rs*1.1)
         print("locked")
         sdr = RtlSdr(device_index = device)
