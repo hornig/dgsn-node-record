@@ -4,15 +4,13 @@ import platform
 #import numpy as np
 #import sys
 from rtlsdr import RtlSdr#, librtlsdr
-
 import hashlib
 from uuid import getnode as get_mac
-
 import json
-import time
-
 # import multiprocessing
 from multiprocessing import Process, Lock
+import time
+import datetime
 
 def create_config():
     sdrconfig = { "sdr":
@@ -27,7 +25,7 @@ def create_config():
                     "gain_auto_threshold": 0.3,
                     "frequency_correction": 0,
                     "mode": "",
-                    "timer": [100000, 200000],
+                    "timer": ["2017-03-28 17:55:19.0", "2017-03-28 18:10:19.0"],
                     "recording_time": 90
                 }
             ]
@@ -88,6 +86,18 @@ def storing_stream_with_windows(lock, rs, cf, gain, ns, device, path_storing):
         f.close()
         os.rename(path_storing + filename + ".tmp", path_storing + filename + ".dat")
 
+def convert_time(s):
+    return time.mktime(datetime.datetime.strptime(s, "%Y-%m-%d %H:%M:%S.%f").utctimetuple())
+
+def check_rtl_device(device):
+    try:
+        sdr = RtlSdr(device_index = device)
+        sdr.close()
+        print("rtlsdr device", device, "ready")
+    except:
+        print("rtlsdr device", device, "not found")
+
+
 def run(path_storing, path_ops, path_logs, device):
     print("you are using", platform.system(), platform.release(), os.name)
 
@@ -103,6 +113,22 @@ def run(path_storing, path_ops, path_logs, device):
     cf   = sdr_configuration["sdr"][0]["center_frequency"]
     ns   = sdr_configuration["sdr"][0]["recording_time"] * rs
     gain = sdr_configuration["sdr"][0]["gain_fixed"]
+    timer= sdr_configuration["sdr"][0]["timer"]
+
+    timer[0] = convert_time(timer[0])
+    timer[1] = convert_time(timer[1])
+    print(timer, convert_time(str(datetime.datetime.utcfromtimestamp(time.time()))))
+
+    time_wait = 10.0
+    while timer[0] > convert_time(str(datetime.datetime.utcfromtimestamp(time.time()))):
+        if timer[0] - convert_time(str(datetime.datetime.utcfromtimestamp(time.time()))) > time_wait:
+            time_countdown = time_wait
+        else:
+            time_countdown = timer[0] - convert_time(str(datetime.datetime.utcfromtimestamp(time.time())))
+
+        check_rtl_device(device)
+        print(timer[0] - convert_time(str(datetime.datetime.utcfromtimestamp(time.time()))), time_countdown)
+        time.sleep(time_countdown)
 
     #print(test.update(nsamples))
 
@@ -112,13 +138,14 @@ def run(path_storing, path_ops, path_logs, device):
         lock = Lock()
         jobs = []
 
+        # initializing the recording instances
         for recs in range(2):
             p = Process(target=storing_stream_with_windows, args=(lock, rs, cf, gain, ns, device, path_storing))
             jobs.append(p)
             p.start()
             #print("end")
 
-        while True == True:
+        while timer[1] >= convert_time(str(datetime.datetime.utcfromtimestamp(time.time()))) or timer[0] == timer[1]:#True == True:
             sleeping_time = 2
             time.sleep(sleeping_time)
             for n, p in enumerate(jobs):
