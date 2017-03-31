@@ -25,7 +25,7 @@ def create_config():
                     "gain_auto_threshold": 0.3,
                     "frequency_correction": 0,
                     "mode": "",
-                    "timer": ["2017-03-28 17:55:19.0", "2017-03-28 18:10:19.0"],
+                    "timer": ["2017-04-01 11:00:00.0", "2017-04-01 11:15:00.0"],
                     "recording_time": 90
                 }
             ]
@@ -147,7 +147,7 @@ def run(path_storing, path_ops, path_logs, device):
 
         while timer[1] >= convert_time(str(datetime.datetime.utcfromtimestamp(time.time()))) or timer[0] == timer[1]:#True == True:
             sleeping_time = 2
-            time.sleep(sleeping_time)
+            #time.sleep(sleeping_time)
             for n, p in enumerate(jobs):
                 if not p.is_alive():
                     jobs.pop(n)
