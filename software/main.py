@@ -105,7 +105,7 @@ def check_rtl_device(device):
         print("rtlsdr device", device, "not found")
 
 
-def load_sdr_input():
+def load_sdr_input(path_ops):
     with open(path_ops + 'sdr_config.json', 'r') as f:
          sdr_configuration = json.load(f)
     return sdr_configuration
@@ -116,7 +116,7 @@ def run(path_storing, path_ops, path_logs, device):
     print("your groundstation id is", get_groundstationid())
 
     print("loading configs from", path_ops + "sdr_config.json", "for device", device)
-    sdr_configuration = load_sdr_input()
+    sdr_configuration = load_sdr_input(path_ops)
     print(sdr_configuration)
 
     #device = 0
@@ -137,7 +137,7 @@ def run(path_storing, path_ops, path_logs, device):
     while timer[0] > convert_time(str(datetime.datetime.utcfromtimestamp(time.time()))) and \
                     sdr_configuration["sdr"][0]["record_now"] != 1:
 
-        sdr_configuration = load_sdr_input()
+        sdr_configuration = load_sdr_input(path_ops)
         print(sdr_configuration)
 
         if timer[0] - convert_time(str(datetime.datetime.utcfromtimestamp(time.time()))) > time_wait:
@@ -180,7 +180,7 @@ def run(path_storing, path_ops, path_logs, device):
                     p.start()
                     print("rec number", recs, 'added', lock)
 
-            sdr_configuration = load_sdr_input()
+            sdr_configuration = load_sdr_input(path_ops)
             print(sdr_configuration)
             time.sleep(10)
 
