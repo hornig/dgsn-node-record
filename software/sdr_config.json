@@ -5,7 +5,7 @@
             "type": "rtlsdr",
             "center_frequency": 869525000,
             "samplerate": 2000000,
-            "gain_fixed": "auto",
+            "gain_fixed": "32",
             "gain_auto_range": [
                 0,
                 50
