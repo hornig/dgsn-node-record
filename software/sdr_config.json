@@ -1,9 +1,9 @@
-{
+
     "sdr": [
         {
             "name": "rtlsdr",
             "type": "rtlsdr",
-            "center_frequency": 145825000,
+            "center_frequency": 869525000,
             "samplerate": 2000000,
             "gain_fixed": "auto",
             "gain_auto_range": [
@@ -15,8 +15,8 @@
             "mode": "",
             "record_timer": [
                 [
-                    "2017-06-04 18:20:00.0",
-                    "2017-06-04 18:33:00.0"
+                    "2017-06-17 9:57:00.0",
+                    "2017-06-17 15:00:00.0"
                 ]
             ],
             "record_now": 0,
