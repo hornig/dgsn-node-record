@@ -5,7 +5,7 @@
             "type": "rtlsdr",
             "center_frequency": 145825000,
             "samplerate": 2000000,
-            "gain_fixed": 46.0,
+            "gain_fixed": "auto",
             "gain_auto_range": [
                 0,
                 50
@@ -15,8 +15,8 @@
             "mode": "",
             "record_timer": [
                 [
-                    "2017-08-10 13:40:00.0",
-                    "2017-08-10 13:52:00.0"
+                    "2017-08-10 15:17:00.0",
+                    "2017-08-10 15:29:00.0"
                 ]
             ],
             "record_now": 0,
